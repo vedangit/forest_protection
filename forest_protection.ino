@@ -3,17 +3,33 @@
 #include "rfid.h"
 #include "servo.h"
 #include "flex.h"
-//#include "wifi.h"
+#include "wifi.h"
 #define LED_PIN 7 // Define the pin for the LED
 
 void setup() {
     // Call the setup functions for the sensors
+    Serial.begin(115200);
+
     setupTemperatureSensor();
     setupRFID();
     setupServo();
     //setupWiFi();
     setupFlexSensor();
     pinMode(LED_PIN, OUTPUT);
+
+   // Serial.begin(115200);
+
+  // Set up Wi-Fi connection
+  setupWiFi();
+
+  // Check if Wi-Fi is connected
+  if (checkWiFiConnection()) {
+    Serial.println("Wi-Fi is connected.");
+    // Proceed with further tasks
+  } else {
+    Serial.println("Wi-Fi is not connected. Please check your Wi-Fi credentials.");
+    // Handle the error, maybe restart or enter a fallback mode
+  }
 }
 
 void loop() {
