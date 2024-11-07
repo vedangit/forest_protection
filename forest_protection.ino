@@ -1,3 +1,6 @@
+#include <Adafruit_Sensor.h>
+#include "tiltsensor.h"
+
 #include <Arduino.h>
 #include "tempsensor.h"
 #include "rfid.h"
@@ -12,11 +15,12 @@ void setup() {
 
     setupTemperatureSensor();
     setupRFID();
+    readCardUID();
     setupServo();
     //setupWiFi();
-    setupFlexSensor();
+    //setupFlexSensor();
     pinMode(LED_PIN, OUTPUT);
-
+    setupTiltSensor();
    // Serial.begin(115200);
 
   // Set up Wi-Fi connection
@@ -35,6 +39,8 @@ void setup() {
 void loop() {
 
   //loopWiFi();
+  checkTilt();
+    readCardUID();
     // Read temperature and humidity
     float temperature = readTemperature();
     float humidity = readHumidity();
@@ -51,16 +57,16 @@ void loop() {
 
     delay(1000); // Delay to prevent spamming the output
 
-    int flexValue = readFlexSensor();
-    Serial.print("Flex Sensor Value: ");
-    Serial.println(flexValue);
+    // int flexValue = readFlexSensor();
+    // Serial.print("Flex Sensor Value: ");
+    // Serial.println(flexValue);
 
-    //Set a threshold for tree cutting detection
-    int threshold = 300; // Adjust this value based on your testing
-    if (isTreeCutDetected(flexValue, threshold)) {
-       Serial.println("Tree cutting detected!");
-        //Implement actions if needed
-    }
+    // //Set a threshold for tree cutting detection
+    // int threshold = 300; // Adjust this value based on your testing
+    // if (isTreeCutDetected(flexValue, threshold)) {
+    //    Serial.println("Tree cutting detected!");
+    //     //Implement actions if needed
+    // }
 
-    delay(1000); // Delay for readability
+    // delay(1000); // Delay for readability
 }
